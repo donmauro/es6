@@ -3,7 +3,7 @@ const main_html = `
   <div class="spa-shell-head">
     <div class="spa_shell_head_logo">
       <h1>ES6</h1>
-      <p>Webpack</p>
+      <p>no framework</p>
     </div>
     <div class="spa-shell-head-acct"></div>
   </div>
@@ -50,12 +50,20 @@ const initModule = ( container ) => {
   const li = document.getElementsByClassName( 'spa-shell-nav-li' )
     for (let i=0; i < li.length; i++) {
 
-        li[i].addEventListener(
-          "click", function( event ) {
+//        li[i].addEventListener(
+//          "click", function( event ) {
+//          onClickMenuitem( event.currentTarget.id )
+//          }
+//      )
+    }
+  for (let _li of li) {
+        _li.addEventListener(
+          "click", ( event ) => {
           onClickMenuitem( event.currentTarget.id )
           }
       )
-    }
+  }
+
 }
 
 export { initModule }
