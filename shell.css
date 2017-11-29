@@ -5,8 +5,8 @@
 
 .shell-head, .shell-head-logo, .shell-head-acct,
 .shell-head-search, .shell-main, .shell-main-nav,
-.shell-main-content, .shell-foot,
-.shell-modal {
+.shell-main-content,
+.shell-foot {
   position : absolute;
 }
 .shell-head {
@@ -103,14 +103,5 @@
   height : 40px;
 }
 .shell-modal {
-  /*margin-top    : -200px;
-  margin-left   : -200px;
-  top           : 50%;
-  left          : 50%;
-  width         : 400px;
-  height        : 400px;
-  background    : #fff;
-  border-radius : 3px;
-  z-index       : 2;
-  display       : none;*/
+
 }

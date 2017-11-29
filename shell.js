@@ -1,3 +1,4 @@
+import * as message from './message.js'
 import * as modHome from '/home.js'
 // Module variables
 const main_html = `
@@ -22,6 +23,7 @@ const nav_html = `
   <ul>
     <li id="home" class="shell-nav-li"><a href="#home">Home</a></li>
     <li id="news" class="shell-nav-li"><a href="#news">News</a></li>
+    <li id="message" class="shell-nav-li"><a href="#message">Message</a></li>
     <li shell-nav-li><a href="#contact">Contact</a></li>
     <li shell-nav-li><a href="#about">About</a></li>
   </ul>
@@ -37,8 +39,8 @@ const onClickMenuitem = ( id ) => {
         //spa.news.initModule( domMap.content );
         break;
       }
-      case "nino": {
-        //spa.nino.initModule( domMap.content );
+      case "message": {
+        message.show( 'Messaggio modale')
         break;
       }
     }
@@ -59,6 +61,9 @@ const initModule = ( container ) => {
           }
       )
   }
+
+
+
 
 }
 
