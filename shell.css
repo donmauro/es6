@@ -54,7 +54,7 @@
   top    : 0;
   left   : 0;
   bottom : 0;
-  font   : 10px Arial, Helvetica, sans-serif;
+  font   : 12px Arial, Helvetica, sans-serif;
 }
 .shell-main-nav {
   width      : 300px;
@@ -83,7 +83,7 @@
 
   /* Change the link color on hover */
   .shell-main-nav li a:hover {
-      color: white;
+      color: red;
   }
   .x-closed .shell-main-nav {
     width  : 0;
