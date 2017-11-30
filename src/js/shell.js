@@ -1,5 +1,5 @@
 import * as message from './message.js'
-import * as modHome from '/home.js'
+import * as modHome from './home.js'
 // Module variables
 const main_html = `
   <div class="shell-head">

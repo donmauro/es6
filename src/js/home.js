@@ -1,4 +1,4 @@
-import * as message from '/message.js'
+import * as message from './message.js'
 // Module variables
 const main_html = `
   <div>
