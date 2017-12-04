@@ -1,4 +1,5 @@
 import * as message from './message.js'
+import { socket } from './sock.js'
 // Module variables
 const main_html = `
   <div>
@@ -11,6 +12,7 @@ const main_html = `
       <input type="date" name="dataNascita"><br>
       <button type="button">Salva</button>
     </form>
+<input name="sock" type="button" value="Socket"></input>
   </div>
 `
 
@@ -37,6 +39,16 @@ const initModule = ( container ) => {
       const jsonData = JSON.stringify(dataObject);
       console.log( dataObject )
       alert( jsonData )
+      //message.show('Salvato')
+    })
+
+    document.querySelector("input[name='sock']")
+    .addEventListener('click', () => {
+      socket.emit('es6','es6 client')
+      socket.on('es6', () => {
+        alert('sio da server')
+      })
+
       //message.show('Salvato')
     })
 }
