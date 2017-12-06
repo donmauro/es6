@@ -5,11 +5,8 @@ const main_html = `
   <div>
     <form>
       Nome:<br>
-      <input type="text" name="nome"><br>
-      Cognome:<br>
-      <input type="text" name="cognome"><br>
-      Data:
-      <input type="date" name="dataNascita"><br>
+      <input type="text" name="name"><br>
+
       <button type="button">Salva</button>
     </form>
 <input name="sock" type="button" value="Socket"></input>
@@ -39,6 +36,10 @@ const initModule = ( container ) => {
       const jsonData = JSON.stringify(dataObject);
       console.log( dataObject )
       alert( jsonData )
+      socket.emit('es6', dataObject )
+      socket.on('es6', ( result ) => {
+        console.log( result )
+      })
       //message.show('Salvato')
     })
 
@@ -54,3 +55,7 @@ const initModule = ( container ) => {
 }
 
 export { initModule }
+//      Cognome:<br>
+//      <input type="text" name="cognome"><br>
+//      Data:
+//      <input type="date" name="dataNascita"><br>
