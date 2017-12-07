@@ -2,14 +2,17 @@ import * as message from './message.js'
 import { socket } from './sock.js'
 // Module variables
 const main_html = `
-  <div>
+  <div class="create">
     <form>
       Nome:<br>
-      <input type="text" name="name"><br>
+      <input type="text" name="nome"><br>
+      Cognome:<br>
+      <input type="text" name="cognome"><br>
+      Data di nascita:<br>
+      <input type="date" name="dataNascita"><br><br>
 
-      <button type="button">Salva</button>
     </form>
-<input name="sock" type="button" value="Socket"></input>
+    <input name="salva" type="button" value="Salva"></input>
   </div>
 `
 
@@ -28,7 +31,7 @@ const initModule = ( container ) => {
 
   container.innerHTML = main_html
 
-  document.querySelector('button')
+  document.querySelector("input[name='salva']")
     .addEventListener('click', () => {
       const elements = document.querySelectorAll('form input')
 
@@ -36,26 +39,14 @@ const initModule = ( container ) => {
       const jsonData = JSON.stringify(dataObject);
       console.log( dataObject )
       alert( jsonData )
-      socket.emit('es6', dataObject )
-      socket.on('es6', ( result ) => {
+      socket.emit('create', dataObject )
+      socket.on('create', ( result ) => {
         console.log( result )
       })
       //message.show('Salvato')
     })
 
-    document.querySelector("input[name='sock']")
-    .addEventListener('click', () => {
-      socket.emit('es6','es6 client')
-      socket.on('es6', () => {
-        alert('sio da server')
-      })
-
-      //message.show('Salvato')
-    })
 }
 
 export { initModule }
-//      Cognome:<br>
-//      <input type="text" name="cognome"><br>
-//      Data:
-//      <input type="date" name="dataNascita"><br>
+

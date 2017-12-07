@@ -1,5 +1,6 @@
 import * as message from './message.js'
-import * as modHome from './home.js'
+import * as create from './create.js'
+import * as read from './read.js'
 // Module variables
 const main_html = `
   <div class="shell-head">
@@ -21,8 +22,8 @@ const main_html = `
 `
 const nav_html = `
   <ul>
-    <li id="home" class="shell-nav-li"><a href="#home">Home</a></li>
-    <li id="news" class="shell-nav-li"><a href="#news">News</a></li>
+    <li id="create" class="shell-nav-li"><a href="#create">Create</a></li>
+    <li id="read" class="shell-nav-li"><a href="#read">Read</a></li>
     <li id="message" class="shell-nav-li"><a href="#message">Message</a></li>
     <li shell-nav-li><a href="#contact">Contact</a></li>
     <li shell-nav-li><a href="#about">About</a></li>
@@ -30,13 +31,13 @@ const nav_html = `
 `
 const onClickMenuitem = ( id ) => {
     switch (id) {
-      case "home": {
+      case "create": {
 
-        modHome.initModule( document.querySelector('.shell-main-content') );
+        create.initModule( document.querySelector('.shell-main-content') );
         break;
       }
-      case "news": {
-        //spa.news.initModule( domMap.content );
+      case "read": {
+        read.initModule( document.querySelector('.shell-main-content') );
         break;
       }
       case "message": {
