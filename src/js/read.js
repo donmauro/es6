@@ -4,30 +4,29 @@ import { socket } from './sock.js'
 const main_html = `
   <div class="read">
     Nome: <input id="nomeRead" type="text" >
-    <input id="search" type="button" value="Cerca"></input>
+    <input id="search" type="button" value="Cerca"></input><br>
+    <br>
+    <div class="read-sub"></div>
+
   </div>
 
 `
 const search = () => {
-  alert( 'search' )
-   const queryString = document.getElementById("nomeRead").value
 
-    socket.emit('read',{ nome: {$regex: '^' + queryString, $options: 'i' } })
-    socket.on('read', ( result ) => {
-      alert( result )
-    } )
-//    document.addEventListener( 'my', function( e ) {
-//      console.log("MY");
-//      var html   = String(),
-//          cursor = e.data;
-//      html += '<table>'
-//      for (var i=0; i < cursor[0].length; i++ ) {
-//
-//        html += '<tr><td><p>' + cursor[0][i].name + '</p></td></tr>'
-//      }
-//      html += '</table>'
-//      document.getElementsByClassName( 'spa-home-sub' )[0].innerHTML = html;
-//    })
+  const queryString = document.querySelector('#nomeRead').value
+
+  socket.emit('read',{ nome: {$regex: '^' + queryString, $options: 'i' } })
+  socket.on('read', ( result ) => {
+    let html = String()
+    html += '<table>'
+    html += '<tr><th>Nome</th><th>Cognome</th><th>Data di nascita</th></tr>'
+    for ( let row of result ) {
+      html += '<tr><td><p>' + row.nome + '</p></td><td><p>' + row.cognome + '</p></td><td><p>' + row.dataNascita + '</p></td></tr>'
+    }
+    html += '</table>'
+    document.querySelector( '.read-sub' ).innerHTML = html;
+  } )
+
 
 };
 

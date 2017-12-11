@@ -1,3 +1,7 @@
 .read {
   margin: 1em 1em 1em 1em;
 }
+.read table, th, td {
+    border: 1px solid gray;
+    border-collapse: collapse;
+}
