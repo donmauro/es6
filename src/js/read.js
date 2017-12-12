@@ -6,10 +6,26 @@ const main_html = `
     Nome: <input id="nomeRead" type="text" >
     <input id="search" type="button" value="Cerca"></input><br>
     <br>
+    <input id="nuovo" type="button" value="Nuovo"></input><br>
     <div class="read-sub"></div>
 
   </div>
 
+`
+
+const create_html = `
+  <div class="create">
+    <form>
+      Nome:<br>
+      <input type="text" name="nome"><br>
+      Cognome:<br>
+      <input type="text" name="cognome"><br>
+      Data di nascita:<br>
+      <input type="date" name="dataNascita"><br><br>
+
+    </form>
+    <input name="salva" type="button" value="Salva"></input>
+  </div>
 `
 const search = () => {
 
@@ -21,14 +37,60 @@ const search = () => {
     html += '<table>'
     html += '<tr><th>Nome</th><th>Cognome</th><th>Data di nascita</th></tr>'
     for ( let row of result ) {
-      html += '<tr><td><p>' + row.nome + '</p></td><td><p>' + row.cognome + '</p></td><td><p>' + row.dataNascita + '</p></td></tr>'
+      html += '<tr><td><p>' + row.nome + '</p></td><td><p>' + row.cognome + '</p></td><td><p>' + row.dataNascita + '</p></td><td><p id="' + row._id + '" class="elimina">Elimina</p></td></tr>'
     }
     html += '</table>'
-    document.querySelector( '.read-sub' ).innerHTML = html;
+
+    document.querySelector( '.read-sub' ).innerHTML = html
+
+    const dels = document.querySelectorAll( ".elimina" )
+
+    for ( let del of dels ) {
+      del.addEventListener('click', ( event ) => {
+        elimina( event.currentTarget.id )
+
+      } )
+    }
+
   } )
 
+}
 
-};
+const elimina = ( id ) => {
+  socket.emit('destroy', id )
+  socket.on('destroy', ( result ) => {
+    console.log( result )
+    document.querySelector("input[id='search']").click()
+
+  })
+}
+
+const serializeArray = ( fields ) => {
+  const object = {}
+  for( let field of fields ){
+    object[ field.name ] = field.value
+
+  }
+
+  return object
+}
+
+const nuovo = () => {
+  document.querySelector( '.read-sub' ).innerHTML = create_html
+    document.querySelector("input[name='salva']")
+    .addEventListener('click', () => {
+      const elements = document.querySelectorAll('form input')
+
+      const dataObject = serializeArray( elements )
+
+      socket.emit('create', dataObject )
+      socket.on('create', ( result ) => {
+        console.log( result )
+        document.querySelector( '.read-sub' ).innerHTML = ''
+      })
+      //message.show('Salvato')
+    })
+}
 
 // Export module initModule
 const initModule = ( container ) => {
@@ -37,6 +99,8 @@ const initModule = ( container ) => {
 
   document.querySelector("input[id='search']")
     .addEventListener('click', search )
+  document.querySelector("input[id='nuovo']")
+    .addEventListener('click', nuovo )
 
 }
 
