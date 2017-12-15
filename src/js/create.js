@@ -1,18 +1,25 @@
 import * as message from './message.js'
-import { socket } from './sock.js'
+import { socket } from './socket.js'
 // Module variables
+
+const list = [
+
+  {
+    k: 1, val: 'A'
+  },
+  {
+    k: 2, val: 'B'
+  },
+  {
+    k: 3, val: 'C'
+  }
+]
 const main_html = `
   <div class="create">
     <form>
-      Nome:<br>
-      <input type="text" name="nome"><br>
-      Cognome:<br>
-      <input type="text" name="cognome"><br>
-      Data di nascita:<br>
-      <input type="date" name="dataNascita"><br><br>
-
+      <select id="xselect"></select>
+      <select id="yselect"></select>
     </form>
-    <input name="salva" type="button" value="Salva"></input>
   </div>
 `
 
@@ -31,22 +38,36 @@ const initModule = ( container ) => {
 
   container.innerHTML = main_html
 
-  document.querySelector("input[name='salva']")
-    .addEventListener('click', () => {
-      const elements = document.querySelectorAll('form input')
+  socket.emit('read',{ nome: {$regex: '^' , $options: 'i' } })
+  socket.on('read', ( result ) => {
+    const x = document.querySelector( '#xselect' )
+    // azzero le options per evitare l'accodamento asincrono
+    x.options.length = 0
+    for ( let row of result ) {
+      const option = document.createElement( 'option' )
+      option.text = row.nome + ' ' + row.cognome
+      option.value = row._id
+      x.add( option )
+    }
+    x.addEventListener( 'change', ( event ) => {
+        alert( event.currentTarget.value )
+      }
+    )
+  })
 
-      const dataObject = serializeArray( elements );
-      const jsonData = JSON.stringify(dataObject);
-      console.log( dataObject )
-      alert( jsonData )
-      socket.emit('create', dataObject )
-      socket.on('create', ( result ) => {
-        console.log( result )
-      })
-      //message.show('Salvato')
-    })
-
+  const x = document.querySelector( '#yselect' )
+  for ( let row of list ) {
+    const option = document.createElement( 'option' )
+    option.text = row.val
+    option.value = row.k
+    x.add( option )
+  }
+  x.addEventListener( 'change', ( event ) => {
+      alert( event.currentTarget.value )
+    }
+  )
 }
+
 
 export { initModule }
 

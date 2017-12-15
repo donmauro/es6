@@ -1,5 +1,15 @@
+/*
+Import Section
+*/
 import * as message from './message.js'
-import { socket } from './sock.js'
+import { socket } from './socket.js'
+
+/*
+Body module
+*/
+
+const sio = socket('/chat')
+
 // Module variables
 const main_html = `
   <div class="read">
@@ -31,8 +41,8 @@ const search = () => {
 
   const queryString = document.querySelector('#nomeRead').value
 
-  socket.emit('read',{ nome: {$regex: '^' + queryString, $options: 'i' } })
-  socket.on('read', ( result ) => {
+  sio.emit('read',{ nome: {$regex: '^' + queryString, $options: 'i' } })
+  sio.on('read', ( result ) => {
     let html = String()
     html += '<table>'
     html += '<tr><th>Nome</th><th>Cognome</th><th>Data di nascita</th></tr>'
@@ -57,8 +67,8 @@ const search = () => {
 }
 
 const elimina = ( id ) => {
-  socket.emit('destroy', id )
-  socket.on('destroy', ( result ) => {
+  sio.emit('destroy', id )
+  sio.on('destroy', ( result ) => {
     console.log( result )
     document.querySelector("input[id='search']").click()
 
@@ -83,8 +93,8 @@ const nuovo = () => {
 
       const dataObject = serializeArray( elements )
 
-      socket.emit('create', dataObject )
-      socket.on('create', ( result ) => {
+      sio.emit('create', dataObject )
+      sio.on('create', ( result ) => {
         console.log( result )
         document.querySelector( '.read-sub' ).innerHTML = ''
       })
