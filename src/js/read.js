@@ -39,11 +39,55 @@ const create_html = `
  Event handlers
 */
 
+
 document.addEventListener( 'searchByName', ( event ) => {
   showTable( event.data )
 })
 
+document.addEventListener( 'create', () => {
+
+  document.querySelector( '.read-sub' ).innerHTML = 'User inserted'
+})
+
+document.addEventListener( 'destroy', () => {
+
+  //refresh table
+  document.querySelector("input[id='search']").click()
+
+})
 const showTable = ( rows ) => {
+  const html = `
+    <table>
+      <tr><th>Nome</th><th>Cognome</th><th>Data di nascita</th><th colspan="2"></th><tr>
+      ${rows.map(row => `
+        <tr id=${row._id} class="row">
+          <td ><p>${row.nome}</p></td>
+            <td><p>${row.cognome}</p></td>
+            <td><p>${row.dataNascita}</p></td>
+            <td><p class="elimina">Elimina</p></td>
+            <td><p class="modifica">Modifica</p></td>
+        </tr>`
+      ).join('')}
+    </table>
+`
+
+document.querySelector( '.read-sub' ).innerHTML = html
+
+    const dels = document.querySelectorAll( ".row" )
+
+    for ( let del of dels ) {
+
+      del.addEventListener('click', ( event ) => {
+        //elimina( event.currentTarget.id )
+
+        console.log( event.currentTarget.id )
+        console.log( event.target.className )
+
+      } )
+    }
+}
+
+const NOshowTable = ( rows ) => {
     let html = String()
     html += '<table>'
     html += '<tr><th>Nome</th><th>Cognome</th><th>Data di nascita</th></tr>'
@@ -73,12 +117,10 @@ const search = () => {
 }
 
 const elimina = ( id ) => {
-  sio.emit('destroy', id )
-  sio.on('destroy', ( result ) => {
-    console.log( result )
-    document.querySelector("input[id='search']").click()
 
-  })
+  user.destroy( id )
+
+
 }
 
 const serializeArray = ( fields ) => {
@@ -93,19 +135,14 @@ const serializeArray = ( fields ) => {
 
 const nuovo = () => {
   document.querySelector( '.read-sub' ).innerHTML = create_html
-    document.querySelector("input[name='salva']")
+  document.querySelector("input[name='salva']")
     .addEventListener('click', () => {
+
       const elements = document.querySelectorAll('form input')
-
       const dataObject = serializeArray( elements )
+      user.create( dataObject )
 
-      sio.emit('create', dataObject )
-      sio.on('create', ( result ) => {
-        console.log( result )
-        document.querySelector( '.read-sub' ).innerHTML = ''
-      })
-      //message.show('Salvato')
-    })
+  })
 }
 
 // Export module initModule
@@ -114,9 +151,10 @@ const initModule = ( container ) => {
   container.innerHTML = main_html
 
   document.querySelector("input[id='search']")
-    .addEventListener('click', search )
+  .addEventListener('click', search )
+
   document.querySelector("input[id='nuovo']")
-    .addEventListener('click', nuovo )
+  .addEventListener('click', nuovo )
 
 }
 
