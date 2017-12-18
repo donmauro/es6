@@ -2,13 +2,11 @@
 Import Section
 */
 import * as message from './message.js'
-import { socket } from './socket.js'
+import * as user    from './model.js'
 
 /*
 Body module
 */
-
-const sio = socket('/chat')
 
 // Module variables
 const main_html = `
@@ -37,16 +35,19 @@ const create_html = `
     <input name="salva" type="button" value="Salva"></input>
   </div>
 `
-const search = () => {
+/*
+ Event handlers
+*/
 
-  const queryString = document.querySelector('#nomeRead').value
+document.addEventListener( 'searchByName', ( event ) => {
+  showTable( event.data )
+})
 
-  sio.emit('read',{ nome: {$regex: '^' + queryString, $options: 'i' } })
-  sio.on('read', ( result ) => {
+const showTable = ( rows ) => {
     let html = String()
     html += '<table>'
     html += '<tr><th>Nome</th><th>Cognome</th><th>Data di nascita</th></tr>'
-    for ( let row of result ) {
+    for ( let row of rows ) {
       html += '<tr><td><p>' + row.nome + '</p></td><td><p>' + row.cognome + '</p></td><td><p>' + row.dataNascita + '</p></td><td><p id="' + row._id + '" class="elimina">Elimina</p></td></tr>'
     }
     html += '</table>'
@@ -61,8 +62,13 @@ const search = () => {
 
       } )
     }
+}
+const search = () => {
 
-  } )
+  const queryString = document.querySelector('#nomeRead').value
+
+  user.searchByName( queryString )
+
 
 }
 
