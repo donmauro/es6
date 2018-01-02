@@ -8,4 +8,8 @@
 .read-sub {
   margin: 1em 0em 0em 0em;
 }
+elimina,modifica:hover {
+  cursor: pointer;
+}
+
 

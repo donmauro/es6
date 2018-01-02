@@ -11,25 +11,27 @@ Body module
 // Module variables
 const main_html = `
   <div class="read">
-    Nome: <input id="nomeRead" type="text" >
-    <input id="search" type="button" value="Cerca"></input><br>
-    <br>
-    <input id="nuovo" type="button" value="Nuovo"></input><br>
+    <form id="formUserSearch">
+      Nome: <input id="name" type="search" >
+      <button id="search" type="submit">Trova</button>
+      <br>
+      <input id="nuovo" type="button" value="Nuovo"></input><br>
+
+    </form>
     <div class="read-sub"></div>
-
   </div>
-
 `
 
 const create_html = `
   <div class="create">
-    <form>
+    <form id=formUserCreate>
       Nome:<br>
       <input type="text" name="nome"><br>
       Cognome:<br>
       <input type="text" name="cognome"><br>
       Data di nascita:<br>
       <input type="date" name="dataNascita"><br><br>
+
 
     </form>
     <input name="salva" type="button" value="Salva"></input>
@@ -52,67 +54,55 @@ document.addEventListener( 'create', () => {
 document.addEventListener( 'destroy', () => {
 
   //refresh table
-  document.querySelector("input[id='search']").click()
+  document.querySelector("button[id='search']").click()
 
 })
 const showTable = ( rows ) => {
   const html = `
-    <table>
+    <table id="userList">
       <tr><th>Nome</th><th>Cognome</th><th>Data di nascita</th><th colspan="2"></th><tr>
       ${rows.map(row => `
         <tr id=${row._id} class="row">
           <td ><p>${row.nome}</p></td>
             <td><p>${row.cognome}</p></td>
             <td><p>${row.dataNascita}</p></td>
-            <td><p class="elimina">Elimina</p></td>
-            <td><p class="modifica">Modifica</p></td>
+            <td><p><select id="del">Elimina</select></p></td>
+            <td><p><select id="upd">Modifica</select></p></td>
         </tr>`
       ).join('')}
     </table>
-`
+  `
 
-document.querySelector( '.read-sub' ).innerHTML = html
+  document.querySelector( '.read-sub' ).innerHTML = html
 
-    const dels = document.querySelectorAll( ".row" )
+  const table  = document.getElementById( "userList" )
+  const tableRows = table.querySelectorAll(".row")
+  for( let row of tableRows ) {
 
-    for ( let del of dels ) {
+    row.addEventListener('click', ( event ) => {
+      if (event.target.tagName == 'select') {
+        switch( event.target.id ) {
+          case "del" : {
+            const parent = row.parentNode;
+            parent.removeChild(row);
+          }
+        }
+      }
 
-      del.addEventListener('click', ( event ) => {
-        //elimina( event.currentTarget.id )
 
-        console.log( event.currentTarget.id )
-        console.log( event.target.className )
 
-      } )
-    }
-}
+    })
+  }
 
-const NOshowTable = ( rows ) => {
-    let html = String()
-    html += '<table>'
-    html += '<tr><th>Nome</th><th>Cognome</th><th>Data di nascita</th></tr>'
-    for ( let row of rows ) {
-      html += '<tr><td><p>' + row.nome + '</p></td><td><p>' + row.cognome + '</p></td><td><p>' + row.dataNascita + '</p></td><td><p id="' + row._id + '" class="elimina">Elimina</p></td></tr>'
-    }
-    html += '</table>'
+{
 
-    document.querySelector( '.read-sub' ).innerHTML = html
+}}
 
-    const dels = document.querySelectorAll( ".elimina" )
 
-    for ( let del of dels ) {
-      del.addEventListener('click', ( event ) => {
-        elimina( event.currentTarget.id )
+const search = ( event ) => {
 
-      } )
-    }
-}
-const search = () => {
-
-  const queryString = document.querySelector('#nomeRead').value
-
-  user.searchByName( queryString )
-
+  event.preventDefault()
+  user.searchByName( event.target.name.value )
 
 }
 
@@ -149,9 +139,8 @@ const nuovo = () => {
 const initModule = ( container ) => {
 
   container.innerHTML = main_html
-
-  document.querySelector("input[id='search']")
-  .addEventListener('click', search )
+  const form = document.forms.formUserSearch
+  form.addEventListener ('submit', search, false);
 
   document.querySelector("input[id='nuovo']")
   .addEventListener('click', nuovo )

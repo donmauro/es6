@@ -63,4 +63,7 @@
     font-weight : 800;
     color       : #000;
   }
+  select:hover {
+    cursor:pointer;
+  }
 /** End standard selectors */
