@@ -43,6 +43,7 @@ const create_html = `
 
 
 document.addEventListener( 'searchByName', ( event ) => {
+  console.log('searchByName')
   showTable( event.data )
 })
 
@@ -66,8 +67,8 @@ const showTable = ( rows ) => {
           <td ><p>${row.nome}</p></td>
             <td><p>${row.cognome}</p></td>
             <td><p>${row.dataNascita}</p></td>
-            <td><p><select id="del">Elimina</select></p></td>
-            <td><p><select id="upd">Modifica</select></p></td>
+            <td><p><sel id="del">Elimina</sel></p></td>
+            <td><p><sel id="upd">Modifica</sel></p></td>
         </tr>`
       ).join('')}
     </table>
@@ -80,9 +81,12 @@ const showTable = ( rows ) => {
   for( let row of tableRows ) {
 
     row.addEventListener('click', ( event ) => {
-      if (event.target.tagName == 'select') {
+      console.log(event.target.tagName)
+      console.log(event.target.id)
+      if (event.target.tagName == 'SEL') {
         switch( event.target.id ) {
           case "del" : {
+            user.destroy( row.id )
             const parent = row.parentNode;
             parent.removeChild(row);
           }
@@ -100,7 +104,7 @@ const showTable = ( rows ) => {
 
 
 const search = ( event ) => {
-
+  console.log('search')
   event.preventDefault()
   user.searchByName( event.target.name.value )
 

@@ -32,6 +32,7 @@ const create = ( dataObject ) => {
 
 
 const searchByName = ( queryString ) => {
+  console.log('model:searchByName')
    sio.emit( 'searchByName', queryString )
 }
 
