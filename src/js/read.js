@@ -10,47 +10,61 @@ Body module
 
 // Module variables
 const main_html = `
-  <div class="read">
-    <form id="formUserSearch">
-      <label for='name'>Nome:<input id="name" type="search" ></input></label>
-      <button id="search" type="submit">Trova</button>
-      <br>
-    </form>
+  <form id="formUserSearch">
+    <div class="search__wrapper">
+      <p>
+        <label for="s" class="search__label">Cerca per nome: </label>
+        <input type="search" id="name" class="search__input">
+        <button type="submit" class="search__submit">Cerca</button>
+      </p>
+    </div>
+  </form>
+  <p>
     <input id="nuovo" type="button" value="Nuovo"></input><br>
-    <div class="read-sub"></div>
-  </div>
+  </p>
+  <div class="read-sub"></div>
 `
 
 const create_html = `
   <div class="create">
-    <form id="formUserCreate">
-      Nome:<br>
-      <input type="text" name="nome"><br>
-      Cognome:<br>
-      <input type="text" name="cognome"><br>
-      Data di nascita:<br>
-      <input type="date" name="dataNascita"><br><br>
-      <p>Sesso</p>
-      <label for='male'>M:
-          <input type='radio' name='sesso' value='M' id='male'>
-      </label>
-      <label for='female'>F:
+    <fieldset>
+      <legend> Utente </legend>
+      <form id="formUserCreate">
+        <p>
+          <label for="nome">Nome</label><br>
+          <input type="text" name="nome">
+        </p>
+        <p>
+          <label for="cognome">Cognome</label><br>
+          <input type="text" name="cognome"><br>
+        </p>
+        <p>
+          <label for="dataNascita">Data di nascita</label><br>
+          <input type="date" name="dataNascita"><
+        <p>
+        <p>Sesso</p>
+        <p>
+          <label for='male'>M</label>
+          <input type='radio' name='sesso' value='M' id='male' checked>
+          <label for='female'>F</label>
           <input type='radio' name='sesso' value='F' id='female'>
-      </label>
-      <label for='citta'>Comune di nascita:
-        <select name='citta' id='citta'>
-          <option value='' selected>Scegli....</option>
-          <option value='Metropolis'>Palermo</option>
-          <option value='Gotham City'>Trapani</option>
-          <option value='Keystone City'>Agrigento</option>
+        </p>
+        <p>
+          <label for='citta'>Comune di nascita:
+            <select name='citta' id='citta'>
+              <option value='' selected>Scegli....</option>
+              <option value='1'>Palermo</option>
+              <option value='2'>Trapani</option>
+              <option value='3'>Agrigento</option>
 
-        </select>
-      </label>
-      <br>
-      <input type='submit'></input>
-
-    </form>
-
+            </select>
+          </label>
+        </p>
+        <p>
+          <input type='submit'></input>
+        </p>
+      </form>
+    </fieldset>
   </div>
 `
 /*
@@ -76,6 +90,7 @@ document.addEventListener( 'destroy', () => {
 })
 const showTable = ( rows ) => {
   const html = `
+    <p>
     <table id="userList">
       <tr><th>Nome</th><th>Cognome</th><th>Data di nascita</th><th colspan="2"></th><tr>
       ${rows.map(row => `
@@ -88,6 +103,7 @@ const showTable = ( rows ) => {
         </tr>`
       ).join('')}
     </table>
+    </p>
   `
 
   document.querySelector( '.read-sub' ).innerHTML = html

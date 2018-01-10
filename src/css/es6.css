@@ -5,6 +5,7 @@
 
 /** Begin reset */
   * {
+    font : 12pt 'Trebuchet MS', Verdana, Helvetica, Arial, sans-serif;
     margin  : 0;
     padding : 0;
     -webkit-box-sizing : border-box;
@@ -51,7 +52,7 @@
 
 /** Begin standard selectors */
   body {
-    font : 12pt 'Trebuchet MS', Verdana, Helvetica, Arial, sans-serif;
+
     color            : #444;
     background-color : #ffffff;
   }
