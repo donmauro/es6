@@ -29,7 +29,7 @@ const create_html = `
   <div class="create">
     <fieldset>
       <legend> Utente </legend>
-      <form id="formUserCreate">
+      <form id="formUser">
         <p>
           <label for="nome">Nome</label><br>
           <input type="text" name="nome">
@@ -77,6 +77,12 @@ document.addEventListener( 'searchByName', ( event ) => {
   showTable( event.data )
 })
 
+document.addEventListener( 'searchById', ( event ) => {
+  console.log('searchById')
+  console.log( event.data )
+  showUser( event.data[0] )
+})
+
 document.addEventListener( 'create', () => {
 
   document.querySelector( '.read-sub' ).innerHTML = 'User inserted'
@@ -88,6 +94,22 @@ document.addEventListener( 'destroy', () => {
   document.querySelector("button[id='search']").click()
 
 })
+
+const showUser = ( data ) => {
+  document.querySelector( '.read-sub' ).innerHTML = create_html
+  const form = document.forms[ 'formUser' ]
+  console.log( "showuser" )
+  console.log( data)
+  //form.elements[ 'nome' ].value = data[ 'nome' ]
+  for (const key  of data) {
+
+
+      console.log( key)
+  }
+
+}
+
+
 const showTable = ( rows ) => {
   const html = `
     <p>
@@ -122,19 +144,14 @@ const showTable = ( rows ) => {
             const parent = row.parentNode;
             parent.removeChild(row);
           }
+          case "upd" : {
+            user.searchById( row.id )
+          }
         }
       }
-
-
-
     })
   }
-
-{
-
-}}
-
-
+}
 const search = ( event ) => {
   console.log('search')
   event.preventDefault()
@@ -142,12 +159,6 @@ const search = ( event ) => {
 
 }
 
-const elimina = ( id ) => {
-
-  user.destroy( id )
-
-
-}
 
 const serializeArray = ( fields ) => {
   const object = {}
@@ -161,7 +172,7 @@ const serializeArray = ( fields ) => {
 
 const nuovo = () => {
   document.querySelector( '.read-sub' ).innerHTML = create_html
-  const form = document.forms[ 'formUserCreate' ]
+  const form = document.forms[ 'formUser' ]
   form.addEventListener( 'submit', ( event ) => {
       event.preventDefault()
       let jsonData = {}

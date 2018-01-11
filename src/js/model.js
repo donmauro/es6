@@ -20,6 +20,12 @@ sio.on( 'searchByName', ( result ) => {
   document.dispatchEvent( event )
 })
 
+sio.on( 'searchById', ( result ) => {
+  const event = new CustomEvent('searchById', {bubbles: true, cancelable: true})
+  event.data = result
+  document.dispatchEvent( event )
+})
+
 sio.on( 'destroy', ( result ) => {
   const event = new CustomEvent('destroy', {bubbles: true, cancelable: true})
   event.data = result
@@ -36,10 +42,16 @@ const searchByName = ( queryString ) => {
    sio.emit( 'searchByName', queryString )
 }
 
+const searchById = ( id ) => {
+  console.log('model:searchById')
+   sio.emit( 'searchById', id )
+}
+
 const destroy = ( id ) => {
   sio.emit( 'destroy', id )
 }
 export { create,
          destroy,
-         searchByName
+         searchByName,
+         searchById
 }
