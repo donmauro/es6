@@ -32,7 +32,7 @@ const create_html = `
       <form id="formUser">
         <p>
           <label for="nome">Nome</label><br>
-          <input type="text" name="nome">
+          <input id="nome" type="text" name="nome">
         </p>
         <p>
           <label for="cognome">Cognome</label><br>
@@ -40,7 +40,7 @@ const create_html = `
         </p>
         <p>
           <label for="dataNascita">Data di nascita</label><br>
-          <input type="date" name="dataNascita"><
+          <input type="date" name="dataNascita">
         <p>
         <p>Sesso</p>
         <p>
@@ -73,13 +73,12 @@ const create_html = `
 
 
 document.addEventListener( 'searchByName', ( event ) => {
-  console.log('searchByName')
+
   showTable( event.data )
 })
 
 document.addEventListener( 'searchById', ( event ) => {
-  console.log('searchById')
-  console.log( event.data )
+
   showUser( event.data[0] )
 })
 
@@ -95,20 +94,35 @@ document.addEventListener( 'destroy', () => {
 
 })
 
-const showUser = ( data ) => {
+const showUser = ( user ) => {
   document.querySelector( '.read-sub' ).innerHTML = create_html
   const form = document.forms[ 'formUser' ]
-  console.log( "showuser" )
-  console.log( data)
-  //form.elements[ 'nome' ].value = data[ 'nome' ]
-  for (const key  of data) {
+
+  for ( const key  in user ) {
 
 
-      console.log( key)
+    if ( form.elements[ key  ] ) {
+
+        form.elements[ key  ].value = user[ key ]
+      }
   }
 
-}
+  form.addEventListener( 'submit', ( event ) => {
+      event.preventDefault()
+      let data = {}
+      console.log( form.elements )
+      for (const element  of form.elements) {
 
+
+          data[ element.name ] = element.value;
+      }
+      data.id = user._id
+      console.log( 'MODIFICATO')
+      console.log( data )
+  })
+
+
+}
 
 const showTable = ( rows ) => {
   const html = `
@@ -175,15 +189,15 @@ const nuovo = () => {
   const form = document.forms[ 'formUser' ]
   form.addEventListener( 'submit', ( event ) => {
       event.preventDefault()
-      let jsonData = {}
+      let data = {}
       console.log( form.elements )
       for (const element  of form.elements) {
 
 
-          jsonData[ element.name ] = element.value;
+          data[ element.name ] = element.value;
       }
-      console.log( jsonData )
-      user.create(  jsonData  )
+      console.log( data )
+      user.create(  data  )
 
 
 
