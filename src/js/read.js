@@ -87,23 +87,28 @@ document.addEventListener( 'create', () => {
   document.querySelector( '.read-sub' ).innerHTML = 'User inserted'
 })
 
+document.addEventListener( 'update', () => {
+
+  alert( 'upd')
+})
+
 document.addEventListener( 'destroy', () => {
 
   //refresh table
-  document.querySelector("button[id='search']").click()
+  //document.querySelector("button[id='search']").click()
 
 })
 
-const showUser = ( user ) => {
+const showUser = ( userData ) => {
   document.querySelector( '.read-sub' ).innerHTML = create_html
   const form = document.forms[ 'formUser' ]
 
-  for ( const key  in user ) {
+  for ( const key  in userData ) {
 
 
     if ( form.elements[ key  ] ) {
 
-        form.elements[ key  ].value = user[ key ]
+        form.elements[ key  ].value = userData[ key ]
       }
   }
 
@@ -112,13 +117,17 @@ const showUser = ( user ) => {
       let data = {}
       console.log( form.elements )
       for (const element  of form.elements) {
+          console.log( element)
 
-
-          data[ element.name ] = element.value;
+          if ( element.name !== '' ) {
+            data[ element.name ] = element.value;
+          }
       }
-      data.id = user._id
+      userData._id
       console.log( 'MODIFICATO')
       console.log( data )
+      console.log( userData._id )
+      user.update(  userData._id, data )
   })
 
 
@@ -157,15 +166,18 @@ const showTable = ( rows ) => {
             user.destroy( row.id )
             const parent = row.parentNode;
             parent.removeChild(row);
+            break;
           }
           case "upd" : {
             user.searchById( row.id )
+            break;
           }
         }
       }
     })
   }
 }
+
 const search = ( event ) => {
   console.log('search')
   event.preventDefault()

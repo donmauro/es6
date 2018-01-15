@@ -32,6 +32,12 @@ sio.on( 'destroy', ( result ) => {
   document.dispatchEvent( event )
 })
 
+sio.on( 'update', ( result ) => {
+  const event = new CustomEvent('update', {bubbles: true, cancelable: true})
+  event.data = result
+  document.dispatchEvent( event )
+})
+
 const create = ( dataObject ) => {
    sio.emit( 'create', dataObject )
 }
@@ -50,8 +56,14 @@ const searchById = ( id ) => {
 const destroy = ( id ) => {
   sio.emit( 'destroy', id )
 }
+
+const update = ( id, obj_map ) => {
+  sio.emit( 'update', id, obj_map )
+}
+
 export { create,
          destroy,
          searchByName,
-         searchById
+         searchById,
+         update,
 }
