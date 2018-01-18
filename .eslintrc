@@ -2,15 +2,8 @@
     "parserOptions": {
         "ecmaVersion": 6,
         "sourceType": "module",
-        "ecmaFeatures": {
-
-        }
     },
     "rules": {
-
-    },
-    "env": {
-        "browser": true,
-        "node": true
+        "semi": 2
     }
 }

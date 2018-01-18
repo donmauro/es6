@@ -1,8 +1,9 @@
 /*
 Import Section
 */
-import * as message from './message.js'
-import * as user    from './model.js'
+import * as dm      from './dm.js';
+import * as message from './message.js';
+import * as user    from './model.js';
 
 /*
 Body module
@@ -23,7 +24,7 @@ const main_html = `
     <input id="nuovo" type="button" value="Nuovo"></input><br>
   </p>
   <div class="read-sub"></div>
-`
+`;
 
 const create_html = `
   <div class="create">
@@ -45,9 +46,9 @@ const create_html = `
         <p>Sesso</p>
         <p>
           <label for='male'>M</label>
-          <input type='radio' name='sesso' value='M' id='male' checked>
+          <input type='radio' name='sesso' value='M' id='male' checked/>
           <label for='female'>F</label>
-          <input type='radio' name='sesso' value='F' id='female'>
+          <input type='radio' name='sesso' value='F' id='female'/>
         </p>
         <p>
           <label for='citta'>Comune di nascita:
@@ -66,7 +67,7 @@ const create_html = `
       </form>
     </fieldset>
   </div>
-`
+`;
 /*
  Event handlers
 */
@@ -74,64 +75,48 @@ const create_html = `
 
 document.addEventListener( 'searchByName', ( event ) => {
 
-  showTable( event.data )
-})
+  showTable( event.data );
+});
 
 document.addEventListener( 'searchById', ( event ) => {
 
-  showUser( event.data[0] )
-})
+  showUser( event.data[0] );
+});
 
 document.addEventListener( 'create', () => {
 
-  document.querySelector( '.read-sub' ).innerHTML = 'User inserted'
-})
+  document.querySelector( '.read-sub' ).innerHTML = 'User inserted';
+});
 
 document.addEventListener( 'update', () => {
 
-  alert( 'upd')
-})
+  alert( 'upd');
+});
 
 document.addEventListener( 'destroy', () => {
 
   //refresh table
   //document.querySelector("button[id='search']").click()
 
-})
+});
 
 const showUser = ( userData ) => {
-  document.querySelector( '.read-sub' ).innerHTML = create_html
-  const form = document.forms[ 'formUser' ]
 
-  for ( const key  in userData ) {
+  document.querySelector( '.read-sub' ).innerHTML = create_html;
+  const form = document.forms[ 'formUser' ];
 
-
-    if ( form.elements[ key  ] ) {
-
-        form.elements[ key  ].value = userData[ key ]
-      }
-  }
+  dm.formLoad( form, userData );
 
   form.addEventListener( 'submit', ( event ) => {
-      event.preventDefault()
-      let data = {}
-      console.log( form.elements )
-      for (const element  of form.elements) {
-          console.log( element)
 
-          if ( element.name !== '' ) {
-            data[ element.name ] = element.value;
-          }
-      }
-      userData._id
-      console.log( 'MODIFICATO')
-      console.log( data )
-      console.log( userData._id )
-      user.update(  userData._id, data )
-  })
+    event.preventDefault();
+    const data = dm.formToData( form );
+    console.log ( data );
+    user.update(  userData._id, dm.formToData( form ) );
 
+  });
 
-}
+};
 
 const showTable = ( rows ) => {
   const html = `
@@ -149,90 +134,73 @@ const showTable = ( rows ) => {
       ).join('')}
     </table>
     </p>
-  `
+  `;
 
-  document.querySelector( '.read-sub' ).innerHTML = html
+  document.querySelector( '.read-sub' ).innerHTML = html;
 
-  const table  = document.getElementById( "userList" )
-  const tableRows = table.querySelectorAll(".row")
+  const table  = document.getElementById( "userList" );
+  const tableRows = table.querySelectorAll(".row");
   for( let row of tableRows ) {
 
     row.addEventListener('click', ( event ) => {
-      console.log(event.target.tagName)
-      console.log(event.target.id)
+
       if (event.target.tagName == 'SEL') {
         switch( event.target.id ) {
           case "del" : {
-            user.destroy( row.id )
+            user.destroy( row.id );
             const parent = row.parentNode;
             parent.removeChild(row);
             break;
           }
           case "upd" : {
-            user.searchById( row.id )
+            user.searchById( row.id );
             break;
           }
         }
       }
-    })
+    });
   }
-}
+};
 
 const search = ( event ) => {
-  console.log('search')
-  event.preventDefault()
-  user.searchByName( event.target.name.value )
+  console.log('search');
+  event.preventDefault();
+  user.searchByName( event.target.name.value );
 
-}
+};
 
 
 const serializeArray = ( fields ) => {
-  const object = {}
+  const object = {};
   for( let field of fields ){
-    object[ field.name ] = field.value
+    object[ field.name ] = field.value;
 
   }
 
-  return object
-}
+  return object;
+};
 
 const nuovo = () => {
-  document.querySelector( '.read-sub' ).innerHTML = create_html
-  const form = document.forms[ 'formUser' ]
+  document.querySelector( '.read-sub' ).innerHTML = create_html;
+  const form = document.forms[ 'formUser' ];
   form.addEventListener( 'submit', ( event ) => {
-      event.preventDefault()
-      let data = {}
-      console.log( form.elements )
-      for (const element  of form.elements) {
+      event.preventDefault();
+
+      user.create(  dm.formToData( form )  );
+
+  });
+};
 
 
-          data[ element.name ] = element.value;
-      }
-      console.log( data )
-      user.create(  data  )
-
-
-
-
-//  document.querySelector("input[name='salva']")
-//    .addEventListener('click', () => {
-//
-//      const elements = document.querySelectorAll('form input')
-//      const dataObject = serializeArray( elements )
-//      user.create( dataObject )
-//
-//  })
-  })
-}
 // Export module initModule
 const initModule = ( container ) => {
 
-  container.innerHTML = main_html
-  const form = document.forms.formUserSearch
+  container.innerHTML = main_html;
+  const form = document.forms.formUserSearch;
   form.addEventListener ('submit', search, false);
 
-  document.querySelector("input[id='nuovo']").addEventListener('click', nuovo )
+  document.querySelector("input[id='nuovo']").addEventListener('click', nuovo );
 
-}
+};
 
-export { initModule }
+export { initModule };

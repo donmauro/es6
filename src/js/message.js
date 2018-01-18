@@ -2,7 +2,7 @@
 const onClickClosebtn = () => {
 
   document.querySelector('.message-modal').style.display = "none";
-}
+};
 
 const show = ( msg ) => {
 
@@ -13,10 +13,10 @@ const show = ( msg ) => {
         <p id="message-modal-text">${ msg }</p>
       </div>
     </div>
-  `
-  document.querySelector('.shell-modal').innerHTML = message_html
+  `;
+  document.querySelector('.shell-modal').innerHTML = message_html;
   document.querySelector('.message-modal').style.display = "block";
-  document.querySelector('.message-modal-closebtn').addEventListener('click', onClickClosebtn )
-}
+  document.querySelector('.message-modal-closebtn').addEventListener('click', onClickClosebtn );
+};
 
-export { show }
+export { show };
