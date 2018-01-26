@@ -93,7 +93,9 @@ document.addEventListener( 'update', () => {
   alert( 'upd');
 });
 
-document.addEventListener( 'destroy', () => {
+document.addEventListener( 'destroy', ( event ) => {
+
+  console.log( event.data[0] );
 
   //refresh table
   //document.querySelector("button[id='search']").click()

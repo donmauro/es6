@@ -27,6 +27,8 @@ sio.on( 'searchById', ( result ) => {
 })
 
 sio.on( 'destroy', ( result ) => {
+  console.log( 'SIO');
+  console.log( result );
   const event = new CustomEvent('destroy', {bubbles: true, cancelable: true})
   event.data = result
   document.dispatchEvent( event )

@@ -1,8 +1,7 @@
 const formToData = ( form ) => {
 
   let data = {};
-  for (const element  of form.elements) {
-    console.log( String( element.type ) );
+  for ( const element of form.elements ) {
     switch ( element.type ) {
 
       case "text" : {
@@ -29,14 +28,14 @@ const formToData = ( form ) => {
         break;
       }
     }
-
   }
+
   console.log(data);
   return data;
 
-{
+};
 
-}};
+
 
 const formLoad = ( form, data ) => {
 
