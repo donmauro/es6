@@ -95,7 +95,10 @@ document.addEventListener( 'update', () => {
 
 document.addEventListener( 'destroy', ( event ) => {
 
-  console.log( event.data[0] );
+
+  if ( event.data.hasOwnProperty( 'error') ) {
+    alert( event.data.message )
+  }
 
   //refresh table
   //document.querySelector("button[id='search']").click()
