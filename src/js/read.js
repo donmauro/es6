@@ -33,15 +33,15 @@ const create_html = `
       <form id="formUser">
         <p>
           <label for="nome">Nome</label><br>
-          <input id="nome" type="text" name="nome">
+          <input id="nome" type="text" name="nome" required>
         </p>
         <p>
           <label for="cognome">Cognome</label><br>
-          <input type="text" name="cognome"><br>
+          <input type="text" name="cognome" required><br>
         </p>
         <p>
           <label for="dataNascita">Data di nascita</label><br>
-          <input type="date" name="dataNascita">
+          <input type="date" name="dataNascita" required>
         <p>
         <p>Sesso</p>
         <p>
@@ -79,7 +79,9 @@ document.addEventListener( 'searchByName', ( event ) => {
 });
 
 document.addEventListener( 'searchById', ( event ) => {
-
+  if ( event.data.hasOwnProperty( 'error') ) {
+    alert( event.data.message )
+  }
   showUser( event.data[0] );
 });
 
