@@ -8,10 +8,10 @@ import * as user    from './model.js';
 /*
 Body module
 */
-
+let userID;
 // Module variables
-const main_html = `
-  <form id="formUserSearch">
+const mainHTML = `
+  <form id="search">
     <div class="search__wrapper">
       <p>
         <label for="s" class="search__label">Cerca per nome: </label>
@@ -26,47 +26,45 @@ const main_html = `
   <div class="read-sub"></div>
 `;
 
-const create_html = `
-  <div class="create">
-    <fieldset>
-      <legend> Utente </legend>
-      <form id="formUser">
-        <p>
-          <label for="nome">Nome</label><br>
-          <input id="nome" type="text" name="nome" required>
-        </p>
-        <p>
-          <label for="cognome">Cognome</label><br>
-          <input type="text" name="cognome" required><br>
-        </p>
-        <p>
-          <label for="dataNascita">Data di nascita</label><br>
-          <input type="date" name="dataNascita" required>
-        <p>
-        <p>Sesso</p>
-        <p>
-          <label for='male'>M</label>
-          <input type='radio' name='sesso' value='M' id='male' checked/>
-          <label for='female'>F</label>
-          <input type='radio' name='sesso' value='F' id='female'/>
-        </p>
-        <p>
-          <label for='citta'>Comune di nascita:
-            <select name='citta' id='citta'>
-              <option value='' selected>Scegli....</option>
-              <option value='1'>Palermo</option>
-              <option value='2'>Trapani</option>
-              <option value='3'>Agrigento</option>
+const userHTML = `
+  <fieldset>
+    <legend> Utente </legend>
+    <form id="user">
+      <p>
+        <label for="nome">Nome</label><br>
+        <input id="nome" type="text" name="nome" required>
+      </p>
+      <p>
+        <label for="cognome">Cognome</label><br>
+        <input type="text" name="cognome" required><br>
+      </p>
+      <p>
+        <label for="dataNascita">Data di nascita</label><br>
+        <input type="date" name="dataNascita" required>
+      <p>
+      <p>Sesso</p>
+      <p>
+        <label for='male'>M</label>
+        <input type='radio' name='sesso' value='M' id='male' checked/>
+        <label for='female'>F</label>
+        <input type='radio' name='sesso' value='F' id='female'/>
+      </p>
+      <p>
+        <label for='citta'>Comune di nascita:
+          <select name='citta' id='citta'>
+            <option value='' selected>Scegli....</option>
+            <option value='1'>Palermo</option>
+            <option value='2'>Trapani</option>
+            <option value='3'>Agrigento</option>
 
-            </select>
-          </label>
-        </p>
-        <p>
-          <input type='submit'></input>
-        </p>
-      </form>
-    </fieldset>
-  </div>
+          </select>
+        </label>
+      </p>
+      <p>
+        <input type='submit'></input>
+      </p>
+    </form>
+  </fieldset>
 `;
 /*
  Event handlers
@@ -75,14 +73,14 @@ const create_html = `
 
 document.addEventListener( 'searchByName', ( event ) => {
 
-  showTable( event.data );
+  list( event.data );
 });
 
 document.addEventListener( 'searchById', ( event ) => {
   if ( event.data.hasOwnProperty( 'error') ) {
     alert( event.data.message )
   }
-  showUser( event.data[0] );
+  show( event.data[0] );
 });
 
 document.addEventListener( 'create', () => {
@@ -91,8 +89,11 @@ document.addEventListener( 'create', () => {
 });
 
 document.addEventListener( 'update', () => {
-
-  alert( 'upd');
+  if ( event.data.hasOwnProperty( 'error') ) {
+    alert( event.data.message )
+  } else {
+  alert( 'upd')
+  }
 });
 
 document.addEventListener( 'destroy', ( event ) => {
@@ -102,30 +103,29 @@ document.addEventListener( 'destroy', ( event ) => {
     alert( event.data.message )
   }
 
-  //refresh table
-  //document.querySelector("button[id='search']").click()
 
 });
 
-const showUser = ( userData ) => {
+const show = ( data ) => {
 
-  document.querySelector( '.read-sub' ).innerHTML = create_html;
-  const form = document.forms[ 'formUser' ];
+  document.querySelector( '.read-sub' ).innerHTML = userHTML;
+  const form = document.forms[ 'user' ];
 
-  dm.formLoad( form, userData );
+  dm.JSONToForm( form, data );
 
   form.addEventListener( 'submit', ( event ) => {
 
     event.preventDefault();
-    const data = dm.formToData( form );
+
     console.log ( data );
-    user.update(  userData._id, dm.formToData( form ) );
+
+    user.update(  data._id, dm.formToJSON( form ) );
 
   });
 
 };
 
-const showTable = ( rows ) => {
+const list = ( rows ) => {
   const html = `
     <p>
     <table id="userList">
@@ -188,8 +188,8 @@ const serializeArray = ( fields ) => {
 };
 
 const nuovo = () => {
-  document.querySelector( '.read-sub' ).innerHTML = create_html;
-  const form = document.forms[ 'formUser' ];
+  document.querySelector( '.read-sub' ).innerHTML = userHTML;
+  const form = document.forms[ 'user' ];
   form.addEventListener( 'submit', ( event ) => {
       event.preventDefault();
 
@@ -202,8 +202,8 @@ const nuovo = () => {
 // Export module initModule
 const initModule = ( container ) => {
 
-  container.innerHTML = main_html;
-  const form = document.forms.formUserSearch;
+  container.innerHTML = mainHTML;
+  const form = document.forms.search;
   form.addEventListener ('submit', search, false);
 
   document.querySelector("input[id='nuovo']").addEventListener('click', nuovo );

@@ -1,4 +1,4 @@
-const formToData = ( form ) => {
+const formToJSON = ( form ) => {
 
   let data = {};
   for ( const element of form.elements ) {
@@ -36,8 +36,7 @@ const formToData = ( form ) => {
 };
 
 
-
-const formLoad = ( form, data ) => {
+const JSONToForm = ( form, data ) => {
 
   for ( const key  in data ) {
 
@@ -51,6 +50,6 @@ const formLoad = ( form, data ) => {
 };
 
 export {
-  formLoad,
-  formToData,
+  JSONToForm,
+  formToJSON,
 };
