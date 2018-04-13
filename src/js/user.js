@@ -193,7 +193,7 @@ const nuovo = () => {
   form.addEventListener( 'submit', ( event ) => {
       event.preventDefault();
 
-      user.create(  dm.formToData( form )  );
+      user.create(  dm.formToJSON( form )  );
 
   });
 };

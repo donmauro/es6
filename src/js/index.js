@@ -1,7 +1,7 @@
-import { initModule } from './shell.js'
+import { initModule } from './shell.js';
 
   document.addEventListener('DOMContentLoaded', () => {
 
-    initModule( document.getElementById('spa') )
+    initModule( document.getElementById('spa') );
 
-  }, false)
+  }, false);
